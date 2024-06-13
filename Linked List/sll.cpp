@@ -13,14 +13,18 @@ class Node{
             this->data = data;
             this->next = NULL;
         }
-};
 
-void InsertAtHead(Node* &head,int data)
-{
-    Node* temp = new Node(data);
-    temp->next = head;
-    head=temp;
-}
+        ~Node() //Destructor
+        {
+            int value =this->data;
+            if(this->next!=NULL)
+            {
+                delete next;
+                this->next=NULL;
+            }
+            cout<<"Memory is now free with data"<<value<<endl;
+        }
+};
 
 void PrintList(Node* &head)
 {
@@ -34,6 +38,14 @@ void PrintList(Node* &head)
     cout<<"Null\n";
 
 }
+
+void InsertAtHead(Node* &head,int data)
+{
+    Node* temp = new Node(data);
+    temp->next = head;
+    head=temp;
+}
+
 
 void InsertAtTail(Node* tail,int data)
 {
@@ -69,6 +81,42 @@ void InsertATPosition(int position,int data,Node*head,Node* tail)
     ptr->next=temp;
 
 }
+
+
+void DeleteNode(int position, Node* &head)
+{
+    //deleting first node
+    if(position==1)
+    {
+        Node* temp=head;
+        head=head->next;
+
+
+        //free memory of start node
+        temp->next=NULL;
+        delete temp;
+        
+    }
+    else
+    {
+        Node* curr=head;
+        Node* prev=NULL;
+
+        int cnt=1;
+        while(cnt<position)
+        {
+            prev=curr;
+            curr=curr->next;
+            cnt++;
+        }
+        prev->next=curr->next;
+        curr->next=NULL;
+        delete curr;
+       
+    }
+
+}
+
 int main()
 {
     //create a node
@@ -89,6 +137,9 @@ int main()
     PrintList(head);
 
     InsertATPosition(2,20,head,tail);
+    PrintList(head);
+
+    DeleteNode(1,head);
     PrintList(head);
     return 0;
 }
